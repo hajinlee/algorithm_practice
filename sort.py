@@ -114,6 +114,7 @@ def partition(array, low, high):
 for test in tests:
     answer = sorted(test)
     for name, method in \
+        ('insertion sort', insertion_sort), \
         ('selection sort', selection_sort), \
         ('merge sort', merge_sort), \
         ('quick sort', quick_sort), \
