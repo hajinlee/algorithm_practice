@@ -113,12 +113,7 @@ def partition(array, low, high):
 
 for test in tests:
     answer = sorted(test)
-    for name, method in \
-        ('insertion sort', insertion_sort), \
-        ('selection sort', selection_sort), \
-        ('merge sort', merge_sort), \
-        ('quick sort', quick_sort), \
-        ('heap sort', heap_sort):
+    for method in [insertion_sort, selection_sort, merge_sort, quick_sort, heap_sort]:
         if method is heap_sort:
             # returns new array
             result = method(test)
@@ -129,4 +124,4 @@ for test in tests:
             result = temp
 
         if result != answer:
-            print('ERROR!', name, test, result)
+            print('ERROR!', method.__name__, test, result)
