@@ -1,5 +1,3 @@
-import heapq
-
 tests = [
     [10, 8, 3, 12, 1, 5, 7, 3, 8, 15],
     [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -36,13 +34,46 @@ def selection_sort(array):
         index += 1
 
 def heap_sort(array):
-    new = []
-    heapq.heapify(array)
-    while array:
-        min_item = heapq.heappop(array)
-        new.append(min_item)
+    length = len(array)
+    heapify(array, length)
+    end = length-1
 
-    return new
+    while end > 0:
+        swap(array, end, 0)
+        end -= 1
+        sift_down(array, 0, end)
+
+def heapify(array, length):
+    # end is assigned the index of the first (left) child of the root
+    start = (length-1-1) // 2
+
+    while start >= 0:
+        # sift down the node at index start to the proper place such that all nodes below
+        # the start index are in heap order
+        sift_down(array, start, length-1)
+        start -= 1
+
+def sift_down(array, start, end):
+    # start represents the limit of how far up the heap to sift.
+    # end is the node to sift up.
+    root = start
+
+    while ((root*2) + 1) <= end:
+        child = ((root*2) + 1)
+        temp = root
+
+        if array[temp] < array[child]:
+            temp = child
+
+        if child+1 <= end and array[temp] < array[child+1]:
+            temp = child + 1
+
+        if temp == root:
+            return
+
+        else:
+            swap(array, root, temp)
+            root = temp
 
 # merge sort in-place the part of "array" between start and last, inclusive
 def merge_sort(array, start=0, last=None):
@@ -114,14 +145,9 @@ def partition(array, low, high):
 for test in tests:
     answer = sorted(test)
     for method in [insertion_sort, selection_sort, merge_sort, quick_sort, heap_sort]:
-        if method is heap_sort:
-            # returns new array
-            result = method(test)
-        else:
-            # operates in-place
-            temp = test[:] # make a copy
-            method(temp)
-            result = temp
+        temp = test[:] # make a copy
+        method(temp)
+        result = temp
 
         if result != answer:
             print('ERROR!', method.__name__, test, result)
